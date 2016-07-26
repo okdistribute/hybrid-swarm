@@ -1,4 +1,4 @@
-# hyperdrive-archive-swarm
+# hybrid-swarm
 
 Finds peers using client-side browser webrtc connections and node.js.
 
