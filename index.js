@@ -1,6 +1,5 @@
 var webRTCSwarm = require('webrtc-swarm')
 var discoverySwarm = require('discovery-swarm')
-var signalhub = require('signalhub')
 var inherits = require('inherits')
 var events = require('events')
 
@@ -12,6 +11,7 @@ function HybridSwarm (opts) {
   self.browser = null
   self.node = null
   self.connections = 0
+  self.opts = opts
   if (opts.wrtc || webRTCSwarm.WEBRTC_SUPPORT) self._browser()
   if (process.versions.node) self._node()
 }
@@ -33,14 +33,23 @@ HybridSwarm.prototype.close = function (cb) {
   })
 }
 
+HybridSwarm.prototype._listening = function () {
+  throw new Error('Unimplemented.')
+}
+
+HybridSwarm.prototype._connection = function () {
+  throw new Error('Unimplemented.')
+}
+
 HybridSwarm.prototype._browser = function () {
   var self = this
-  var swarmKey = (self.opts.signalhubPrefix || 'dat-') + self.archive.discoveryKey.toString('hex')
-  self.browser = webRTCSwarm(signalhub(swarmKey, self.signalhub), {wrtc: self.opts.wrtc})
+  self.browser = webRTCSwarm(self.opts.signalhub, {wrtc: self.opts.wrtc})
   self.browser.on('peer', function (conn) {
     self.connections++
+    var opts = {type: 'webrtc-swarm'}
+    self._connection(conn, opts)
     conn.on('close', function () { self.connections-- })
-    self.emit('connection', conn, {type: 'webrtc-swarm'})
+    self.emit('connection', conn, opts)
   })
   return self.browser
 }
@@ -50,14 +59,17 @@ HybridSwarm.prototype._node = function () {
 
   var swarm = discoverySwarm(self.opts.discovery)
 
+  var opts = {type: 'discovery-swarm'}
+
   swarm.on('connection', function (peer) {
     self.connections++
+    self._connection(peer, opts)
     peer.on('close', function () { self.connections-- })
-    self.emit('connection', peer, {type: 'discovery-swarm'})
+    self.emit('connection', peer, opts)
   })
 
   swarm.on('listening', function () {
-    swarm.join(self.archive.discoveryKey)
+    self._listening()
   })
 
   swarm.once('error', function () {

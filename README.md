@@ -18,6 +18,7 @@ var swarm = hybrid({
   signalhub: signalhub,
   discovery: discovery
 })
+
 swarm.on('connection', function (conn) {
   if (conn.type === 'webrtc-swarm') {
     console.log('connected to webrtc-swarm')
