@@ -29,3 +29,33 @@ swarm.on('connection', function (conn) {
   console.log(swarm.hybrid.connections, 'total connections')
 })
 ```
+
+## API
+
+##### `HybridSwarm(opts)`
+
+Takes options for `signalhub` and `discovery`. See example for more information.
+
+##### `HybridSwarm.connections`
+
+The number of total connections.
+
+##### `HybridSwarm._connection(conn, opts)`
+
+Called when the webrtc swarm has found a new connection (or peer). 
+
+Arguments:
+
+  * `conn`: connection object
+  * `opts`: contains metadata, such as the module/connection type: 'webrtc-swarm' or 'discovery-swarm'
+
+
+##### `HybridSwarm._listening()`
+
+Called when the node swarm is listening.
+
+## Example
+
+Used in
+
+  *  [https://github.com/karissa/hyperdrive-archive-swarm](hyperdrive-archive-swarm)
