@@ -34,11 +34,9 @@ HybridSwarm.prototype.close = function (cb) {
 }
 
 HybridSwarm.prototype._listening = function () {
-  throw new Error('Unimplemented.')
 }
 
 HybridSwarm.prototype._connection = function () {
-  throw new Error('Unimplemented.')
 }
 
 HybridSwarm.prototype._browser = function () {
