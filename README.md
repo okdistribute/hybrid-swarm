@@ -58,4 +58,4 @@ Called when the node swarm is listening.
 
 Used in
 
-  *  [https://github.com/karissa/hyperdrive-archive-swarm](hyperdrive-archive-swarm)
+* [hyperdrive-archive-swarm](https://github.com/karissa/hyperdrive-archive-swarm)
