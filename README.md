@@ -42,7 +42,7 @@ The number of total connections.
 
 ##### `HybridSwarm._connection(conn, opts)`
 
-Called when the webrtc swarm has found a new connection (or peer). 
+Called when the swarm has found a new connection (or peer). 
 
 Arguments:
 
