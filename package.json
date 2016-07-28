@@ -1,6 +1,6 @@
 {
   "name": "hybrid-swarm",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Finds peers using client-side browser webrtc connections and node.js",
   "main": "index.js",
   "scripts": {
