@@ -16,6 +16,8 @@ function HybridSwarm (opts) {
   if (process.versions.node) self._node()
 }
 
+inherits(HybridSwarm, events.EventEmitter)
+
 HybridSwarm.prototype.close = function (cb) {
   if (cb) this.once('close', cb)
   var self = this
@@ -78,5 +80,3 @@ HybridSwarm.prototype._node = function () {
   self.node = swarm
   return swarm
 }
-
-inherits(HybridSwarm, events.EventEmitter)
