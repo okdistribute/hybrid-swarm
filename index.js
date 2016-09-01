@@ -12,7 +12,8 @@ function HybridSwarm (opts) {
   self.node = null
   self.connections = 0
   self.opts = opts
-  if (opts.wrtc || webRTCSwarm.WEBRTC_SUPPORT) self._browser()
+  opts.wrtc = typeof opts.wrtc !== 'undefined' ? opts.wrtc : webRTCSwarm.WEBRTC_SUPPORT
+  if (opts.wrtc) self._browser()
   if (process.versions.node) self._node()
 }
 
