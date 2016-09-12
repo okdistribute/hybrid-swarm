@@ -10,7 +10,6 @@ function HybridSwarm (opts) {
   var self = this
   self.browser = null
   self.node = null
-  self.peers = {}
   self.connections = 0
   self.opts = opts
   opts.wrtc = typeof opts.wrtc !== 'undefined' ? opts.wrtc : webRTCSwarm.WEBRTC_SUPPORT
@@ -43,18 +42,12 @@ HybridSwarm.prototype._listening = function () {
 HybridSwarm.prototype._connection = function () {
 }
 
-HybridSwarm.prototype._addPeer = function (peer) {
+HybridSwarm.prototype.updateConnections = function () {
   var self = this
-  var id = peer.id ? peer.id.toString('hex') : peer.channelName
-  self.peers[id] = peer
-  self.connections = Object.keys(self.peers).length
-}
-
-HybridSwarm.prototype._removePeer = function (peer) {
-  var self = this
-  var id = peer.id ? peer.id.toString('hex') : peer.channelName
-  delete self.peers[id]
-  self.connections = Object.keys(self.peers).length
+  var node = self.node ? self.node.connections.length : 0
+  var browser = self.browser ? self.browser.peers.length : 0
+  console.log('connections', node, browser, self.connections)
+  self.connections = node + browser
 }
 
 HybridSwarm.prototype._browser = function () {
@@ -62,9 +55,9 @@ HybridSwarm.prototype._browser = function () {
   self.browser = webRTCSwarm(self.opts.signalhub, {wrtc: self.opts.wrtc})
   self.browser.on('peer', function (conn) {
     var opts = {type: 'webrtc-swarm'}
-    self._addPeer(conn)
     self._connection(conn, opts)
-    conn.on('close', function () { self._removePeer(conn) })
+    self.updateConnections()
+    conn.on('close', function () { self.updateConnections() })
     self.emit('connection', conn, opts)
   })
   return self.browser
@@ -75,13 +68,12 @@ HybridSwarm.prototype._node = function () {
 
   var swarm = discoverySwarm(self.opts.discovery)
 
-  var opts = {type: 'discovery-swarm'}
-
-  swarm.on('connection', function (peer) {
-    self._connection(peer, opts)
-    self._addPeer(peer)
-    peer.on('close', function () { self._removePeer(peer) })
-    self.emit('connection', peer, opts)
+  swarm.on('connection', function (conn) {
+    var opts = {type: 'discovery-swarm'}
+    self._connection(conn, opts)
+    self.updateConnections()
+    conn.on('close', function () { self.updateConnections() })
+    self.emit('connection', conn, opts)
   })
 
   swarm.on('listening', function () {
