@@ -46,7 +46,6 @@ HybridSwarm.prototype.updateConnections = function () {
   var self = this
   var node = self.node ? self.node.connections.length : 0
   var browser = self.browser ? self.browser.peers.length : 0
-  console.log('connections', node, browser, self.connections)
   self.connections = node + browser
 }
 
