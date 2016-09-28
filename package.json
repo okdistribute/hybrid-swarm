@@ -20,5 +20,6 @@
     "inherits": "^2.0.1",
     "signalhub": "^4.7.4",
     "webrtc-swarm": "^2.6.0"
-  }
+  },
+  "repository": "karissa/hybrid-swarm"
 }
