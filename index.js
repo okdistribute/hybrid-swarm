@@ -18,7 +18,7 @@ function HybridSwarm (opts) {
   self.connections = 0
   self.opts = opts
   if (typeof opts.wrtc === 'undefined') opts.wrtc = false
-  else opts.wrtc = webRTCSwarm.WEBRTC_SUPPORT
+  opts.wrtc = typeof opts.wrtc !== 'undefined' ? opts.wrtc : webRTCSwarm.WEBRTC_SUPPORT
   if (opts.wrtc) {
     if (!webRTCSwarm) throw new Error('You must install webrtc-swarm as a dependency first.')
     self._browser()
