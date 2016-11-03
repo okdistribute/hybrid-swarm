@@ -1,4 +1,9 @@
-var webRTCSwarm = require('webrtc-swarm')
+var webRTCSwarm
+try {
+  webRTCSwarm = require('webrtc-swarm')
+} catch (e) {
+  webRTCSwarm = null
+}
 var discoverySwarm = require('discovery-swarm')
 var inherits = require('inherits')
 var events = require('events')
@@ -13,7 +18,10 @@ function HybridSwarm (opts) {
   self.connections = 0
   self.opts = opts
   opts.wrtc = typeof opts.wrtc !== 'undefined' ? opts.wrtc : webRTCSwarm.WEBRTC_SUPPORT
-  if (opts.wrtc) self._browser()
+  if (opts.wrtc) {
+    if (!webRTCSwarm) throw new Error('You must install webrtc-swarm as a dependency first.')
+    self._browser()
+  }
   if (process.versions.node) self._node()
 }
 
