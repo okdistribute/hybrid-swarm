@@ -7,7 +7,6 @@ Finds peers using client-side browser webrtc connections and node.js.
 ```js
 var hybrid = require('hybrid-swarm')
 
-
 // see npmjs.org/webrtc-swarm
 var signalhub = 'https://signalhub.mafintosh.com'
 
@@ -16,7 +15,8 @@ var discovery = { ... }
 
 var swarm = hybrid({
   signalhub: signalhub,
-  discovery: discovery
+  discovery: discovery,
+  wrtc: true
 })
 
 swarm.on('connection', function (conn) {
@@ -44,7 +44,7 @@ The number of total connections.
 
 ##### `HybridSwarm._connection(conn, opts)`
 
-Called when the swarm has found a new connection (or peer). 
+Called when the swarm has found a new connection (or peer).
 
 Arguments:
 
