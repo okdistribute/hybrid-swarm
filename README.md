@@ -30,6 +30,8 @@ swarm.on('connection', function (conn) {
 })
 ```
 
+If you intend to use webrtc, please include `webrtc-swarm` as a dependency in your project otherwise the library will throw.
+
 ## API
 
 ##### `HybridSwarm(opts)`
